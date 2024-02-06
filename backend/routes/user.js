@@ -8,6 +8,8 @@ const JWT_SECRET = require('../config')
 const {User, Account} = require('../db')
 const authMiddleware = require('./Middlewares/jwtAuthMiddleware');
 const zod = require('zod');
+const { ObjectId } = require('mongodb');
+
  
 
 // const deleteDB = async () => {
@@ -127,6 +129,27 @@ router.post('/signin', authMiddleware, async (req, res, next) => {
 });
 
 
+router.get('/profile', authMiddleware, async (req, res, next) => {
+    const authHeader = req.headers.authorization;
+
+    const token = authHeader.split(' ')[1];
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+
+    const filter = decoded.userId;
+
+    console.log(filter);
+
+    // const mainUser = await User.findOne({ _id: new ObjectId(filter) });
+    const mainUser = await User.findOne({ _id: filter });
+
+     console.log(mainUser);
+
+    res.json({message : 'ok'}); 
+})
+
+
 router.put('/',validateSignupData, authMiddleware, async (req, res, next) => {
     const body = req.body;
 
@@ -143,19 +166,28 @@ router.put('/',validateSignupData, authMiddleware, async (req, res, next) => {
 router.get('/bulk', authMiddleware, async (req, res, next) => {
     const filter = req.query.filter || "";
 
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(' ')[1];
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    const userId = decoded.userId;
+
     console.log("hitted to the bulk endpoint");
 
     const users = await User.find({
        $or: [{
-            firstName : {"$regex" : filter}
+            firstName : {"$regex" : filter,  $options: 'i'}
        }, {
-        lastName : {"$regex" : filter}
+        lastName : {"$regex" : filter,  $options: 'i'}
        }
        ]
     })
 
+    const userList = users.filter((user) => user._id != userId);
+
     res.json({
-        user : users.map(user => ({
+        user : userList.map(user => ({
             userName : user.userName, 
             firstName : user.firstName, 
             lastName : user.lastName,

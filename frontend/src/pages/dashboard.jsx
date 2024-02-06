@@ -10,7 +10,7 @@ const Dashboard = () => {
         <Appbar />
       </div>
       <div>
-        <UserBalance balance="$5000" />
+        <UserBalance />
         <UserList />
       </div>
     </div>

@@ -4,8 +4,10 @@ import Signin from './pages/signin'
 import Signup from './pages/signup'
 import Dashboard from './pages/dashboard'
 import Send from './pages/send'
+import { useRoutes } from 'react-router-dom'
 
 const App = () => {
+
   return (
     <>
       <BrowserRouter>

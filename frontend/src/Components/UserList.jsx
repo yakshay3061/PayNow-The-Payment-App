@@ -14,23 +14,11 @@ const UserList = () => {
         authorization : token,
       }
     });
-    setUserList(response.data.user);
-    console.log(response.data.user);
-    console.log(typeof(userList));
+    setUserList(response.data.user); 
+    console.log(userList);
   }
 
-  const fetchBalance = async () => {
-    // console.log("user id: " , userId);
-    try {
-          const response = await axios.get('http://localhost:3000/api/v1/account/balance', {userId : "65b8835fe4b112d57d8b55cb"});
 
-          console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  fetchBalance();
 
   useEffect(() => {
     fetchUserList();
@@ -43,8 +31,6 @@ const UserList = () => {
       <SearchBar OnChangeHandler = {(e) => setSearchFilter(e.target.value)}/>
       <div>
         {userList.map((user) => {
-
-          // fetchBalance(user._id);
           return(
             <div key={user._id}>
               <User id = {user._id} icon = {user.firstName[0]} firstName={user.firstName}/> 

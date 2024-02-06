@@ -8,6 +8,8 @@ async function main() {
   console.log("successfully connected to database");
 }
 
+
+
 main();
 
 const userSchema = new mongoose.Schema({
@@ -33,6 +35,11 @@ const accountSchema = new mongoose.Schema({
 
 const Account = mongoose.model("Account", accountSchema);
 
+
+
+// User.collection.deleteMany({});
+// Account.collection.deleteMany({});
+  
 module.exports = {
   User,
   Account,

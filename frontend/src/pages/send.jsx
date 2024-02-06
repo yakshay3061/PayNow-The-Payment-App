@@ -34,6 +34,7 @@ const Send = () => {
     console.log(response);
     console.log('transaction successful');
     setInputAmount("");
+    alert('transaction successful');
     navigate('/bulk');
   };
 

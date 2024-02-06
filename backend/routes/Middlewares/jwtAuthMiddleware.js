@@ -15,10 +15,8 @@ const authMiddleware = (req, res, next) => {
        
 
     try {
-        console.log("before: " , token, JWT_SECRET);
         const decoded = jwt.verify(token, JWT_SECRET, { ignoreExpiration: true });
-        // console.log("after: " , decoded);
-
+        
         if(decoded.userId){
             req.userId = decoded.userId; 
             next();

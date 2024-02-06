@@ -16,7 +16,7 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const token = 'Bearer ' + localStorage.getItem("token");
 
-  console.log("data" ,userName, password);
+  // console.log("data" ,userName, password);
 
   const onClickHandler = async () => {
     try {

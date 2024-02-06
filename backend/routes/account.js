@@ -1,24 +1,31 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-
+ 
 
 
 const {Account} = require('../db');
 const authMiddleware = require('./Middlewares/jwtAuthMiddleware');
 const { default: mongoose } = require('mongoose');
+const JWT_SECRET = require('../config');
 
  
-router.get('/balance', async (req, res, next) => {
-    const body = req.body;
-    console.log("balance body: ",req);
-    // console.log(req.header); 
-    const userId = body.userId;
+router.get('/balance',authMiddleware, async (req, res, next) => {
+    console.log("hitted the balance endpoint");
+ 
+    try {
+        const authHeader = req.headers.authorization;
+        const token = authHeader.split(' ')[1];
 
-    const account = await Account.findOne({userId});
+        const decoded = jwt.verify(token, JWT_SECRET, { ignoreExpiration: true });
+ 
+        const userId = decoded.userId;
+        const account = await Account.findOne({userId});
 
-    res.json({message : "ok"});
-    // res.json({balance : account.balance});
+        res.json({balance : account.balance});
+    } catch (error) {
+        res.json({message : "something went wrong while fetching balance"})
+    }
 })
 
 
