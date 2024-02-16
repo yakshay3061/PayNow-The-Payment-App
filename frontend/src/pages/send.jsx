@@ -3,11 +3,23 @@ import Heading from "../Components/Heading";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Send = () => {
+
+
+  const notify = () => toast.success("Transaction Successful!");
+
+
+
   const navigate = useNavigate();
+
+
+  // receiving data from  previous router(/user) from which this router has been called 
   const location = useLocation();
   const data = location.state;
+
   const token = "Bearer " + localStorage.getItem("token");
   const [inputAmount, setInputAmount] = useState("");
 
@@ -34,14 +46,20 @@ const Send = () => {
     console.log(response);
     console.log('transaction successful');
     setInputAmount("");
-    alert('transaction successful');
-    navigate('/bulk');
+    
+    
+    notify();
+
+    setTimeout(() => {
+      navigate('/bulk');
+    }, 3000);
   };
 
-  console.log("inside send :", data);
+  // console.log("inside send :", data);
   return (
     <>
-      <div className="w-1/2 sm:w-1/4 mx-auto mt-16 bg-gray-300 rounded-xl p-5">
+        <ToastContainer position="top-center" autoClose={2000} />
+        <div className="w-1/2 sm:w-1/4 mx-auto mt-16 bg-gray-300 rounded-xl p-5">
         <Heading title="Send Money" />
         <div className="flex items-center mt-5">
           <div className="w-10 ml-0 bg-green-600 text-center p-2 rounded-full">

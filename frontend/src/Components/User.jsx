@@ -5,7 +5,11 @@ import { useNavigate } from "react-router-dom";
 const User = ({icon = "U", firstName, id}) => {
   const navigate = useNavigate();
 
+
+
   const sendMoneyNavigator = () => {
+
+    // to send data to /send router 
     navigate('/send', {state :  {firstName : firstName, id : id}});
   }
 
